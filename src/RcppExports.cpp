@@ -220,7 +220,7 @@ RcppExport SEXP RQuantLib_fixedRateBondYieldByPriceEngine(SEXP settlementDaysSEX
     return __result;
 }
 // fixedRateBondPriceByYieldEngine
-double fixedRateBondPriceByYieldEngine(double settlementDays, double yield, std::string cal, double faceAmount, double businessDayConvention, double compound, double redemption, double dayCounter, double frequency, QuantLib::Date maturityDate, QuantLib::Date issueDate, QuantLib::Date effectiveDate, std::vector<double> rates);
+double fixedRateBondPriceByYieldEngine(double settlementDays, double yield, std::string cal, double faceAmount, double businessDayConvention, double compound, double redemption, double dayCounter, int frequency, QuantLib::Date maturityDate, QuantLib::Date issueDate, QuantLib::Date effectiveDate, std::vector<double> rates);
 static SEXP RQuantLib_fixedRateBondPriceByYieldEngine_try(SEXP settlementDaysSEXP, SEXP yieldSEXP, SEXP calSEXP, SEXP faceAmountSEXP, SEXP businessDayConventionSEXP, SEXP compoundSEXP, SEXP redemptionSEXP, SEXP dayCounterSEXP, SEXP frequencySEXP, SEXP maturityDateSEXP, SEXP issueDateSEXP, SEXP effectiveDateSEXP, SEXP ratesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
@@ -232,7 +232,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type compound(compoundSEXP);
     Rcpp::traits::input_parameter< double >::type redemption(redemptionSEXP);
     Rcpp::traits::input_parameter< double >::type dayCounter(dayCounterSEXP);
-    Rcpp::traits::input_parameter< double >::type frequency(frequencySEXP);
+    Rcpp::traits::input_parameter< int >::type frequency(frequencySEXP);
     Rcpp::traits::input_parameter< QuantLib::Date >::type maturityDate(maturityDateSEXP);
     Rcpp::traits::input_parameter< QuantLib::Date >::type issueDate(issueDateSEXP);
     Rcpp::traits::input_parameter< QuantLib::Date >::type effectiveDate(effectiveDateSEXP);
@@ -1410,7 +1410,7 @@ static int RQuantLib_RcppExport_validate(const char* sig) {
         signatures.insert("double(*zeroPriceByYieldEngine)(double,double,double,double,double,double,QuantLib::Date,QuantLib::Date)");
         signatures.insert("double(*zeroYieldByPriceEngine)(double,double,double,double,double,double,QuantLib::Date,QuantLib::Date)");
         signatures.insert("double(*fixedRateBondYieldByPriceEngine)(double,double,std::string,double,double,double,double,double,double,QuantLib::Date,QuantLib::Date,QuantLib::Date,std::vector<double>)");
-        signatures.insert("double(*fixedRateBondPriceByYieldEngine)(double,double,std::string,double,double,double,double,double,double,QuantLib::Date,QuantLib::Date,QuantLib::Date,std::vector<double>)");
+        signatures.insert("double(*fixedRateBondPriceByYieldEngine)(double,double,std::string,double,double,double,double,double,int,QuantLib::Date,QuantLib::Date,QuantLib::Date,std::vector<double>)");
         signatures.insert("Rcpp::List(*FloatBond1)(Rcpp::List,std::vector<double>,std::vector<double>,std::vector<double>,std::vector<double>,Rcpp::List,Rcpp::List,Rcpp::List,Rcpp::List)");
         signatures.insert("Rcpp::List(*FloatBond2)(Rcpp::List,std::vector<double>,std::vector<double>,std::vector<double>,std::vector<double>,Rcpp::List,Rcpp::List,Rcpp::List,Rcpp::List,Rcpp::List,Rcpp::List)");
         signatures.insert("Rcpp::List(*FloatBond3)(Rcpp::List,std::vector<double>,std::vector<double>,std::vector<double>,std::vector<double>,Rcpp::List,Rcpp::List,Rcpp::List,Rcpp::List,Rcpp::List,Rcpp::List)");

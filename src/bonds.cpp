@@ -135,7 +135,7 @@ double fixedRateBondPriceByYieldEngine(double settlementDays,
                                        double compound,
                                        double redemption,
                                        double dayCounter,
-                                       double frequency, 
+                                       int frequency, 
                                        QuantLib::Date maturityDate,
                                        QuantLib::Date issueDate,
                                        QuantLib::Date effectiveDate,
@@ -144,7 +144,8 @@ double fixedRateBondPriceByYieldEngine(double settlementDays,
     //set up BusinessDayConvetion
     QuantLib::BusinessDayConvention bdc = getBusinessDayConvention(businessDayConvention);
     QuantLib::DayCounter dc = getDayCounter(dayCounter);
-    QuantLib::Frequency freq = getFrequency(frequency);
+    QuantLib::Frequency freq = QuantLib::Annual;
+    QuantLib::Period freq1 = getPeriod(frequency);
     QuantLib::Compounding cp = getCompounding(compound);
  
     //set up calendar
@@ -155,8 +156,11 @@ double fixedRateBondPriceByYieldEngine(double settlementDays,
     }
         
     //build the bond
-    QuantLib::Schedule sch(effectiveDate, maturityDate, QuantLib::Period(freq), calendar,
+    QuantLib::Schedule sch(effectiveDate, maturityDate, freq1, calendar,
                            bdc, bdc, QuantLib::DateGeneration::Backward, false);
+// VELI
+//         QuantLib::Schedule sch(effectiveDate, maturityDate, period, calendar,
+//                        bdc, bdc, QuantLib::DateGeneration::Backward, false);
         
     QuantLib::FixedRateBond bond(settlementDays, faceAmount, sch, rates, 
                                  dc, bdc, redemption, issueDate);

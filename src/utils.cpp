@@ -167,11 +167,12 @@ boost::shared_ptr<QuantLib::YieldTermStructure> buildTermStructure(Rcpp::List rp
     return curve;
 }
 
+
 QuantLib::Schedule getSchedule(Rcpp::List rparam) {
     
     QuantLib::Date effectiveDate(Rcpp::as<QuantLib::Date>(rparam["effectiveDate"]));
     QuantLib::Date maturityDate(Rcpp::as<QuantLib::Date>(rparam["maturityDate"]));      
-    QuantLib::Period period = QuantLib::Period(getFrequency(Rcpp::as<double>(rparam["period"])));
+    QuantLib::Period period = getPeriod(Rcpp::as<int>(rparam["period"]));
     std::string cal = Rcpp::as<std::string>(rparam["calendar"]);
     QuantLib::Calendar calendar;
     if(!cal.empty()) {
@@ -450,14 +451,18 @@ QuantLib::Frequency getFrequency(const double n){
 }
 
 QuantLib::Period periodByTimeUnit(int length, std::string unit){
-    QuantLib::TimeUnit tu = QuantLib::Years;
-    if (unit=="Days") 
-        tu = QuantLib::Days;
-    if (unit=="Weeks") 
-        tu = QuantLib::Weeks;
-    if (unit=="Months") 
-        tu = QuantLib::Months;
-    return QuantLib::Period(length, tu);
+  QuantLib::TimeUnit tu = QuantLib::Years;
+  if (unit=="Days") 
+    tu = QuantLib::Days;
+  if (unit=="Weeks") 
+    tu = QuantLib::Weeks;
+  if (unit=="Months") 
+    tu = QuantLib::Months;
+  return QuantLib::Period(length, tu);
+}
+
+QuantLib::Period getPeriod(const int length){
+  return QuantLib::Period(length, QuantLib::Days);
 }
 
 QuantLib::TimeUnit getTimeUnit(const double n){
