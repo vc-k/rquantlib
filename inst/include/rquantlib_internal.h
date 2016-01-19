@@ -157,6 +157,7 @@ makeProcess(const boost::shared_ptr<QuantLib::Quote>& u,
 int dateFromR(const Rcpp::Date &d); // using 'new' API's Rcpp::Date
 
 //utility functions for parameters of fixed-income instrument function
+QuantLib::Period getPeriod(const int length);
 QuantLib::Frequency getFrequency(const double n);
 QuantLib::TimeUnit getTimeUnit(const double n);
 QuantLib::Compounding getCompounding(const double n);
