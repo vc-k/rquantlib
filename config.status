@@ -427,7 +427,7 @@ Copyright (C) 2012 Free Software Foundation, Inc.
 This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
-ac_pwd='/home/mcall/github/rquantlib'
+ac_pwd='/home/c1/rquantlib'
 srcdir='.'
 test -n "$AWK" || AWK=awk
 # The default lists apply if the user does not specify any file.
@@ -590,8 +590,8 @@ S["OBJEXT"]="o"
 S["EXEEXT"]=""
 S["ac_ct_CXX"]="g++"
 S["CPPFLAGS"]=""
-S["LDFLAGS"]=" -L/usr/lib -lQuantLib"
-S["CXXFLAGS"]="-g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security -D_FORTIFY_SOURCE=2 -g  -I/usr/include -fpermissive"
+S["LDFLAGS"]=" -L/usr/local/lib -lQuantLib"
+S["CXXFLAGS"]="-g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security -D_FORTIFY_SOURCE=2 -g  -I/usr/local/include -fpermissive"
 S["CXX"]="g++"
 S["target_alias"]=""
 S["host_alias"]=""

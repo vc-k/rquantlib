@@ -67,7 +67,9 @@ export(
     "Schedule",
     ##--utils.R
     "getQuantLibVersion",
-    "getQuantLibCapabilities"
+    "getQuantLibCapabilities",
+    ##--getYield.R
+    "getYieldFromBondPriceISIN"
 )
 
 S3method("AmericanOption", "default")

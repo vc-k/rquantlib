@@ -18,7 +18,8 @@ getYieldFromBondPriceISIN <- function(ISIN, price, evaluationDate = Sys.Date(), 
   queryResponse <- getBondDefinition(ISIN, jdbcDriverPath, dbHost, dbUsername, dbPassword)
     
   
-  apply(queryResponse,1,function(bondDef){
+  lapply(1:nrow(queryResponse),function(x){
+    bondDef <- queryResponse[x,]
     myIssueDate<-as.Date(bondDef$ISSUEDATE)
     myMaturityDate<-as.Date(bondDef$MATURITY)
     myCouponRate<-(bondDef$COUPONRATE)
@@ -26,7 +27,7 @@ getYieldFromBondPriceISIN <- function(ISIN, price, evaluationDate = Sys.Date(), 
     setEvaluationDate(myToday)
     myDayCounter<-'Actual365NoLeap'
     myCouponPeriod<-bondDef$COUPONPERIOD
-    myCleanPrice<- price
+    myCleanPrice<- price[x]
     
     if(bondDef$COUPONPERIOD==0){
       myFaceAmount<- 100 + bondDef$COUPONRATE
@@ -80,6 +81,6 @@ getYieldFromBondPriceISIN <- function(ISIN, price, evaluationDate = Sys.Date(), 
   
 }
 
-tmp <- getYieldFromBondPriceISIN(c("TRDTFVK51610","TRFGDKM41617"),c(92.69567056,98.028),as.Date("2016-01-18"),
-                          "/opt/sqljdbc_4.0/enu/sqljdbc4.jar","jdbc:sqlserver://212.15.8.153;databaseName=OSMANLIBOND",
-                          "osmanlibond_usr", "osmanlibond1*")
+# tmp <- getYieldFromBondPriceISIN(c("TRDTFVK51610","TRFGDKM41617"),c(92.69567056,98.028),as.Date("2016-01-18"),
+#                           "/opt/sqljdbc_4.0/enu/sqljdbc4.jar","jdbc:sqlserver://212.15.8.153;databaseName=OSMANLIBOND",
+#                           "osmanlibond_usr", "osmanlibond1*")
