@@ -29,12 +29,16 @@ getYieldFromBondPriceISIN <- function(ISIN, price, evaluationDate = Sys.Date(), 
     myCouponPeriod<-bondDef$COUPONPERIOD
     myCleanPrice<- price[x]
     
+    if(bondDef$DAYCOUNTCONVENTION==3) myDayConvention <- 8
+    else if(bondDef$DAYCOUNTCONVENTION==4) myDayConvention <- 1
+    
     if(bondDef$COUPONPERIOD==0){
       myFaceAmount<- 100 + bondDef$COUPONRATE
       myYield <- ZeroYield(myCleanPrice, myFaceAmount, myToday, myMaturityDate,
                            dayCounter=1, frequency=1,compound=1,businessDayConvention=5)
     }else
     {
+      myFaceAmount <- 100
       bond <- list(settlementDays=0,
                    issueDate=myIssueDate,
                    faceAmount=myFaceAmount,
