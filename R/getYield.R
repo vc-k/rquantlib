@@ -81,6 +81,3 @@ getYieldFromBondPriceISIN <- function(ISIN, price, evaluationDate = Sys.Date(), 
   
 }
 
-# tmp <- getYieldFromBondPriceISIN(c("TRDTFVK51610","TRFGDKM41617"),c(92.69567056,98.028),as.Date("2016-01-18"),
-#                           "/opt/sqljdbc_4.0/enu/sqljdbc4.jar","jdbc:sqlserver://212.15.8.153;databaseName=OSMANLIBOND",
-#                           "osmanlibond_usr", "osmanlibond1*")
