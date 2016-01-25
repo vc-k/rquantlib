@@ -119,14 +119,17 @@ FixedRateBond.default <- function(bond = list(),
     # exCouponEndOfMonth
     bond <- matchParams(bond)
     
+    if(!is.null(schedule$dates)) schedule$type <- 2
+    else schedule$type <- 1
+    
     # check schedule params
-    if (is.null(schedule$effectiveDate)){
+    if (is.null(schedule$effectiveDate) & is.null(schedule$dates)){
       stop("schedule effective date undefined.")
     }
-    if (is.null(schedule$maturityDate)){
+    if (is.null(schedule$maturityDate) & is.null(schedule$dates)){
       stop("schedule maturity date undefined.")
     }
-    if (is.null(schedule$period)) schedule$period <- 'Semiannual'
+    if (is.null(schedule$period) & is.null(schedule$dates)) schedule$period <- 'Semiannual'
     if (is.null(schedule$calendar)) schedule$calendar <- 'TARGET'
     if (is.null(schedule$businessDayConvention)) schedule$businessDayConvention <- 'Following'
     if (is.null(schedule$terminationDateConvention)) schedule$terminationDateConvention <- 'Following'

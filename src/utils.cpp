@@ -169,10 +169,8 @@ boost::shared_ptr<QuantLib::YieldTermStructure> buildTermStructure(Rcpp::List rp
 
 
 QuantLib::Schedule getSchedule(Rcpp::List rparam) {
+  int type = Rcpp::as<int>(rparam["type"]);
     
-    QuantLib::Date effectiveDate(Rcpp::as<QuantLib::Date>(rparam["effectiveDate"]));
-    QuantLib::Date maturityDate(Rcpp::as<QuantLib::Date>(rparam["maturityDate"]));      
-    QuantLib::Period period = getPeriod(Rcpp::as<int>(rparam["period"]));
     std::string cal = Rcpp::as<std::string>(rparam["calendar"]);
     QuantLib::Calendar calendar;
     if(!cal.empty()) {
@@ -193,16 +191,34 @@ QuantLib::Schedule getSchedule(Rcpp::List rparam) {
     if(rparam.containsElementNamed("endOfMonth") ) {
         endOfMonth = (Rcpp::as<double>(rparam["endOfMonth"]) == 1) ? true : false;
     }
+    if(type == 1){
+      QuantLib::Date effectiveDate(Rcpp::as<QuantLib::Date>(rparam["effectiveDate"]));
+      QuantLib::Date maturityDate(Rcpp::as<QuantLib::Date>(rparam["maturityDate"]));      
+      QuantLib::Period period = getPeriod(Rcpp::as<int>(rparam["period"]));
+      QuantLib::Schedule schedule(effectiveDate,
+                                  maturityDate,
+                                  period,
+                                  calendar,
+                                  businessDayConvention,
+                                  terminationDateConvention,
+                                  dateGeneration,
+                                  endOfMonth);
+      return schedule;
+    }
+    else if(type == 2){
+      std::vector<QuantLib::Date> dates(Rcpp::as<std::vector<QuantLib::Date> >(rparam["dates"]));
+      std::vector<bool> isRegular(Rcpp::as<std::vector<bool> >(rparam["isRegular"]));
+      QuantLib::Schedule schedule(dates,
+                                  calendar,
+                                  businessDayConvention,
+                                  terminationDateConvention,
+                                  QuantLib::Period(10000,QuantLib::Days),
+                                  dateGeneration,
+                                  endOfMonth,
+                                  isRegular);                                  
+      return schedule;
+    }
     
-    QuantLib::Schedule schedule(effectiveDate,
-                                maturityDate,
-                                period,
-                                calendar,
-                                businessDayConvention,
-                                terminationDateConvention,
-                                dateGeneration,
-                                endOfMonth);
-    return schedule;
 }
 
 boost::shared_ptr<QuantLib::FixedRateBond> getFixedRateBond(
