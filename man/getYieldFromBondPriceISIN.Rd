@@ -26,6 +26,9 @@ asdasdasd
 %%     ~~Describe \code{evaluationDate} here~~
 asdasdasd
 }
+  \item{calcDayConvention}{
+asdasdasdasd  
+}
   \item{jdbcDriverPath}{
 %%     ~~Describe \code{jdbcDriverPath} here~~
 asdasdasd
@@ -90,7 +93,7 @@ function (ISIN, price, evaluationDate = Sys.Date(), jdbcDriverPath,
         myCouponPeriod <- bondDef$COUPONPERIOD
         myCleanPrice <- price
         if (bondDef$COUPONPERIOD == 0) {
-            myFaceAmount <- 100 + bondDef$COUPONRATE
+            myFaceAmount <- 100 * (1 + bondDef$COUPONRATE)
             myYield <- ZeroYield(myCleanPrice, myFaceAmount, 
                 myToday, myMaturityDate, dayCounter = 1, frequency = 1, 
                 compound = 1, businessDayConvention = 5)
