@@ -14,7 +14,44 @@ getBondDefinition <- function(ISIN, jdbcDriverPath, dbHost, dbUsername, dbPasswo
   queryResponse[as.numeric(sapply(ISIN, function(x) which(queryResponse[,1]==x))),]
 }
 
+fixedRateBondAdj <- function(bond,myCouponRate,schedule,calc,price,ratePeriod,evaluationDate){
+  coupon.rate <- myCouponRate * round(365/ratePeriod,0)
+  setEvaluationDate(evaluationDate)
+  
+  fit<-FixedRateBond(bond,
+                     coupon.rate,
+                     schedule,
+                     calc,
+                     price=price
+  )
+  fit
+#   if(all.equal(head(fit$cashFlow$Amount,-1),coupon.rate)){
+#     return(fit)
+#   }else{
+#     coupon.rate <- coupon.rate * 100 *myCouponRate / head(fit$cashFlow$Amount,-1 )
+#     #
+#     
+#     fit<-FixedRateBond(bond,
+#                        coupon.rate,
+#                        schedule,
+#                        calc,
+#                        price=myCleanPrice
+#                        #yield=yield
+#     )
+#     return(fit)
+#   }
+}
+
 getYieldFromBondPriceISIN <- function(ISIN, price, evaluationDate = Sys.Date(), calcDayConvention=NULL, jdbcDriverPath, dbHost, dbUsername, dbPassword){
+  
+#   ISIN <- "TRDTFVK51610"
+#   evaluationDate <- as.Date("2016-01-18")
+#   price <- 96.292
+#   jdbcDriverPath <- "/opt/sqljdbc_4.2/enu/sqljdbc4.jar"
+#   dbHost <- "jdbc:sqlserver://212.15.8.153;databaseName=OSMANLIBOND"
+#   dbUsername <- "osmanlibond_usr"
+#   dbPassword <-"osmanlibond1*"
+#   x<-1
   
   queryResponse <- getBondDefinition(ISIN, jdbcDriverPath, dbHost, dbUsername, dbPassword)
   
@@ -25,7 +62,7 @@ getYieldFromBondPriceISIN <- function(ISIN, price, evaluationDate = Sys.Date(), 
             myMaturityDate<-as.Date(bondDef$MATURITY)
             myCouponRate<-(bondDef$COUPONRATE)
             myToday<- evaluationDate
-            setEvaluationDate(myToday)
+            # setEvaluationDate(myToday)
             myDayCounter<-'Actual365NoLeap'
             myCouponPeriod<-bondDef$COUPONPERIOD
             myCleanPrice<- price[x]
@@ -69,19 +106,17 @@ getYieldFromBondPriceISIN <- function(ISIN, price, evaluationDate = Sys.Date(), 
                           compounding='Compounded',
                           freq='Annual',
                           durationType='Modified')
-                coupon.rate <- myCouponRate * round(365/bondDef$COUPONPERIOD,0)
-                
-                setEvaluationDate(myToday)
                 
                 
-                fit<-FixedRateBond(bond,
-                                   coupon.rate,
-                                   schedule,
-                                   calc,
-                                   price=myCleanPrice
-                                   #yield=yield
-                )
-                (fit)
+                fit <- fixedRateBondAdj(bond,
+                                        myCouponRate,
+                                 schedule,
+                                 calc,
+                                 myCleanPrice,
+                                 bondDef$COUPONPERIOD,
+                                 myToday)
+                
+                
                 tail(fit$cashFlow$Amount,2)[1]
                 myYield <- fit$yield
               }

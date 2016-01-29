@@ -76,7 +76,7 @@ double zeroYieldByPriceEngine(double price,
     QuantLib::Natural settlementDays = 1;
        
     QuantLib::BusinessDayConvention bdc = getBusinessDayConvention(businessDayConvention);
-    double redemption = 100;
+    double redemption = faceAmount;
     QuantLib::ZeroCouponBond zbond(settlementDays, calendar, faceAmount, maturityDate,
                                    bdc, redemption, issueDate);
        
